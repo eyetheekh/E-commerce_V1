@@ -24,6 +24,7 @@
 
     #registration and login
         templates- login, register .html
-        forms.py - registerform
+        forms.py - registerform from UserCreationForm
+        
 
 
