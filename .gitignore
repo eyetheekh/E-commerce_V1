@@ -1,1 +1,5 @@
-/venv
+# Environments 
+venv/ 
+
+# Folders
+Templates/
