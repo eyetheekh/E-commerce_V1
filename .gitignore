@@ -1,5 +1,8 @@
 # Environments 
 venv/ 
 
+#Vs code
+.vscode/
+
 # Folders
-Templates/
+Templates_Main/
