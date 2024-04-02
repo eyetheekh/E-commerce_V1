@@ -40,3 +40,9 @@ def user_login(request):
             messages.error(request, 'Login Failed, Try Again!')
 
     return render(request, 'userauth/login.html')
+
+
+def user_logout(request):
+    logout(request)
+    messages.success(request, 'Logged Out!')
+    return redirect('core:home')
