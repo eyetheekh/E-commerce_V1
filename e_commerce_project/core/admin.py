@@ -3,8 +3,13 @@ from django.contrib import admin
 from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review
 
 
+class ProductImagesAdmin(admin.TabularInline):
+    model = Product_Images
+
+
 class Product_Admin(admin.ModelAdmin):
-    list_display = ['PID', 'title', 'category', 'price', 'discount_amount',
+    inlines = [ProductImagesAdmin]
+    list_display = ['title', 'category', 'price', 'discount_amount',
                     'product_status', 'featured_on_home_page',]
     list_editable = ['category', 'product_status', 'price',
                      'discount_amount', 'featured_on_home_page',]

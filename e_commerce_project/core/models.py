@@ -9,7 +9,7 @@ from taggit.managers import TaggableManager
 
 class Category(models.Model):
     CID = ShortUUIDField(
-        unique=True, prefix='CAT', length=10, max_length=15)
+        unique=True, prefix='CAT:', length=10, max_length=15)
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='Category_images')
     desc = models.CharField(max_length=500)
@@ -22,7 +22,7 @@ class Category(models.Model):
 
 
 class Vendor(models.Model):
-    VID = ShortUUIDField(unique=True, length=10, prefix="VEN", max_length=15)
+    VID = ShortUUIDField(unique=True, length=10, prefix="VEN:", max_length=15)
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='Vendor_images')
     desc = models.CharField(max_length=600, blank=True,
@@ -67,7 +67,7 @@ Product_Rating = (
 
 class Product(models.Model):
     PID = ShortUUIDField(
-        unique=True, length=10, prefix="PID", max_length=15)
+        unique=True, length=10, prefix="PID:", max_length=15)
     title = models.CharField(max_length=100, default='Sample')
     desc = models.CharField(
         max_length=500, default='lorem lroeam ipsm lorem doooi')
@@ -114,6 +114,17 @@ class Product_Images(models.Model):
 
     def __str__(self):
         return self.product.title
+    
+    
+# class ProductImages(models.Model):
+#     images = models.ImageField(
+#         upload_to='product-images', default='product.jpg')
+#     product = models.ForeignKey(
+#         Product, related_name='p_images', on_delete=models.SET_NULL, null=True)
+#     date = models.DateTimeField(auto_now_add=True)
+
+#     class Meta:
+#         verbose_name_plural = "Product_Images"
 
 ########################################################################
 ########################################################################

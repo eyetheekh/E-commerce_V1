@@ -3,5 +3,317 @@
 {%endblock%}
 
 {% block content %}
+<div class="container-fluid">
+    <!--  scrollspy -->
+    <div id="scrollable-div" class="scrollable-div border-top border-bottom bg-body-tertiary my-1" data-bs-spy="scroll"
+        data-bs-target="#scrollable-div" data-bs-offset="0">
+        <a href="#scroll-1">Featured</a>
+        <a href="#scroll-2">Exotic</a>
+        <a href="#scroll-3">Latest</a>
+        <a href="#">Link 6</a>
+        <a href="#">Link 7</a>
+        <a href="#">Link 8</a>
+        <a href="#">Link 9</a>
+        <a href="#">Link 10</a>
+        <!-- Add more links as needed -->
+    </div>
+    <!--  scrollspy -->
 
+
+    <!-- start banner -->
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
+        <div class="col-md-6 p-lg-5 mx-auto my-5">
+            <h1 class="display-3 fw-bold">Shop Smarter, Live Better</h1>
+            <h3 class="fw-normal text-muted mb-3">
+                Find what you love, at prices you'll adore
+            </h3>
+            <div class="d-flex gap-3 justify-content-center lead fw-normal">
+                <a class="icon-link" href="#">
+                    Start Shopping
+                    <svg class="bi">
+                        <use xlink:href="#chevron-right"></use>
+                    </svg>
+                </a>
+                <a class="icon-link" href="#">
+                    Buy
+                    <svg class="bi">
+                        <use xlink:href="#chevron-right"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="product-device shadow-sm d-none d-md-block"></div>
+        <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+    </div>
+    <!-- end banner -->
+
+    <!-- search bar -->
+    <div class="container m-3 mx-auto">
+        <div class="row justify-content-center rounded-pill bg-body-tertiary">
+            <div class="col-lg-10 py-lg-5 py-md-4 py-sm-3 py-3">
+                <form class="d-flex" role="search">
+                    <input class="form-control rounded-pill py-lg-3 py-md-3 py-sm-3 py-3 me-2" type="search"
+                        placeholder="Search" aria-label="Search" />
+                    <button class="btn btn-dark rounded-pill" type="submit">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end search bar -->
+
+    <!-- ribbob -->
+    <div class="scrollable-div text-center border-bottom border-top bg-body-tertiary shadow-sm my-1">
+        <a href="" class="btn btn-outline-secondary">All Categories</a>
+        <a href="" class="btn btn-outline-secondary">All Products</a>
+        <!-- {% for i in categories_context %} -->
+        <a href="" class="btn btn-outline-secondary">{{i.title}}</a>
+        <!-- {%endfor%} -->
+    </div>
+    <!-- ribbon -->
+
+
+    <!-- start cards -->
+    <div class="container px-4 py-5" id="custom-cards">
+        <h2 class="pb-2 border-bottom">Our Categories</h2>
+        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+            <!-- {% for c in Categories %} -->
+            <div class="col">
+                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                    style="background-image: url('{{c.image.url}}');background-repeat: no-repeat;background-position: center;background-size: cover;">
+                    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                        <h3 class="pt-5 mt-5 mb-4 text-center display-6 lh-1 fw-bold text-dark">
+                            <a href="" class="btn btn-sm rounded-3 btn-dark">{{c.title}}</a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <!-- {%endfor%} -->
+        </div>
+    </div>
+    <!-- end cards -->
+
+
+    <!-- carousel -->
+    <div id="myCarousel" class="carousel slide my-4 p-3" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1"
+                aria-current="true"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"
+                class=""></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"
+                class=""></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
+                </svg>
+                <div class="container">
+                    <div class="carousel-caption text-start">
+                        <h1>Example headline.</h1>
+                        <p class="opacity-75">
+                            Some representative placeholder content for the first slide of the
+                            carousel.
+                        </p>
+                        <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
+                </svg>
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>Another example headline.</h1>
+                        <p>
+                            Some representative placeholder content for the second slide of
+                            the carousel.
+                        </p>
+                        <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
+                </svg>
+                <div class="container">
+                    <div class="carousel-caption text-end">
+                        <h1>One more for good measure.</h1>
+                        <p>
+                            Some representative placeholder content for the third slide of
+                            this carousel.
+                        </p>
+                        <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- end carousel -->
+
+    <!-- Featured Products -->
+    <h2 id="scroll-1" class="display-4 text-center my-5">Featured Products</h2>
+    <div class="container bg-body-secondary align-items-center shadow my-4">
+        <div class="row bg-body-tertiary">
+            <div class="col-12">
+                <div class="owl-carousel owl-theme p-2 m-2 mx-auto">
+                    {% for i in feartured_products %}
+                    <div class="item bg-secondary align-items-center">
+                        <div class="card shadow-sm border-1 rounded-3" style="max-width: 250px; position: relative">
+                            <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
+                                style="z-index: 1; margin-top: 25px; margin-left: 40px">
+                                -{{i.get_percentage|floatformat:0}}% Off
+                            </div>
+                            <a href="" class="text-decoration-none text-dark">
+                                <div class="ratio ratio-4x3">
+                                    <img src="{{ i.image.url }}" class="card-img-top img-fluid" width="100%"
+                                        height="100%" role="img" preserveAspectRatio="xMidYMid slice"
+                                        focusable="false" />
+                                </div>
+                            </a>
+                            <div class="card-body bg-body-secondary">
+                                <a href="" class="text-decoration-none text-dark">
+                                    <p class="card-title text-center fs-5">{{i.title}}</p>
+                                </a>
+                                <p class="card-title text-center fs-6">
+                                    $<span
+                                        class="card-title text-center fs-6 current-product-price-{{i.id}}">{{i.price}}</span>
+                                </p>
+                                <p class="card-text text-center">
+                                    <small class="text-body-secondary fs-6">Sold by {{i.vendor}}</small>
+                                </p>
+                                <p class="card-text">{{i.description|truncatechars:30}}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group bg-body-tertiary mt-auto">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                                            Buy
+                                        </button>
+
+                                        <input type="hidden" value="1" id="product-quantity"
+                                            class="product-quantity-{{ i.id }}" />
+                                        <input type="hidden" class="product-pid-{{ i.id }}" value="{{ i.pid }}" />
+                                        <input type="hidden" class="product-image-{{ i.id }}" value="{{ i.image.url }}"
+                                            name="" />
+                                        <input type="hidden" class="product-title-{{ i.id }}" value="{{ i.title }}" />
+                                        <input type="hidden" class="product-id-{{i.id}}" value="{{i.id}}" />
+                                        <button type="button" class="btn btn-sm btn-outline-secondary add-to-cart-btn"
+                                            data-index="{{i.id}}" id="add-to-cart-btn">
+                                            Add ToCart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  Featured Products -->
+
+    <!-- category banner 2 -->
+    <div id="scroll-2" class="container-fluid banner bg-secondary my-5">
+        <div class="container py-5">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6">
+                    <div class="py-4">
+                        <h1 class="display-3 text-white">Fresh Exotic Fruits</h1>
+                        <p class="fw-normal display-3 text-dark mb-4">in Our Store</p>
+                        <p class="mb-4 text-dark">
+                            The generated Lorem Ipsum is therefore always free from repetition
+                            injected humour, or non-characteristic words etc.
+                        </p>
+                        <a href="" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">BUY</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="position-relative">
+                        <img src="" class="img-fluid w-100 rounded" alt="" />
+                        <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute"
+                            style="width: 140px; height: 140px; top: 0; left: 0">
+                            <h1 style="font-size: 100px">1</h1>
+                            <div class="d-flex flex-column">
+                                <span class="h2 mb-0">50$</span>
+                                <span class="h4 text-muted mb-0">kg</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end category banner 2 -->
+
+    <!-- Latest products -->
+    <div id="scroll-3" class="container p-5 my-4">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4 display-6">Latest Products</h2>
+            </div>
+        </div>
+
+        <div class="row row-cols-2 row-cols-md-4 row-cols-sm-1 g-4">
+            {% for product in latest_products %}
+            <div class="col">
+                <div class="card mb-3 position-relative">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="Product Image"
+                        style="max-height: 200px" />
+                    <div class="card-body">
+                        <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
+                            style="z-index: 1; margin-top: 25px; margin-left: 40px">
+                            -{{product.get_percentage|floatformat}}% Off
+                        </div>
+                        <h5 class="card-title lead">{{ product.title }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Added: {{ product.date|date }}</small>
+                        <a href="" class="btn btn-primary stretched-link">View</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- end Latest -->
+
+    <!-- start 2 box Section -->
+    <div class="container">
+        <div class="w-100 my-md-3 ps-md-3">
+            <div class="text-bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+                <div class="my-3 py-3">
+                    <h2 class="display-5">Another headline</h2>
+                    <p class="lead">And an even wittier subheading.</p>
+                </div>
+                <div class="bg-body-tertiary shadow-sm mx-auto"
+                    style="width: 80%; height: 300px; border-radius: 21px 21px 0 0">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end 2 box Section -->
+
+
+
+
+
+
+
+</div>
 {%endblock%}
