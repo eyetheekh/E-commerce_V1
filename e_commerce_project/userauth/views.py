@@ -41,7 +41,7 @@ def user_login(request):
 
     return render(request, 'userauth/login.html')
 
-
+@login_required
 def user_logout(request):
     logout(request)
     messages.success(request, 'Logged Out!')
