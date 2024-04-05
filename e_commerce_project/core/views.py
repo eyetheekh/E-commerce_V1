@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review
 from taggit.models import Tag
+from .forms import Product_Review_Form
 
 
 def home(request):
@@ -17,13 +18,40 @@ def home(request):
 
 
 def product_detail_view(request, PID):
+
     product = get_object_or_404(Product, PID=PID)
-    related_products = Product.objects.filter(category=product.category)
-    print(product.discount_percentage())
+
+    if request.method == "POST":
+        Product_Review.objects.create(
+            review=request.POST['review'],
+            rating=request.POST['rating'],
+            user=request.user,
+            product=product,
+        )
+        messages.success(request, 'Review Added')
+
+        # messages.error(request, 'Review cannot be added')
+
+    reviews_of_product = Product_Review.objects.filter(product=product)
+    related_products = Product.objects.filter(
+        category=product.category).exclude(PID=product.PID)
+
+    can_review = True
+    if request.user.is_authenticated:
+        user_reviews = Product_Review.objects.filter(
+            product=product, user=request.user)
+
+        if len(user_reviews) > 0:
+            can_review = False
+
+    form = Product_Review_Form()
 
     context = {
-        "product": product,
+        'product': product,
         "related_products": related_products,
+        'reviews_of_product': reviews_of_product,
+        'can_review': can_review,
+        'form': form,
     }
     return render(request, 'core/product_detail_view.html', context)
 
@@ -86,4 +114,4 @@ def tag_detail_view(request, tag):
         'tag_products': tag_products,
         'tag': tag,
     }
-    return render(request, 'core/tag.html', context)
+    return render(request, 'core/tag_detail_view.html', context)

@@ -42,9 +42,13 @@ $(document).ready(function () {
         }
     });
 
+
+
+
     // Timer for alerts
     setTimeout(function () {
         $(".alert").alert("close");
     }, 5000);
 });
+
 

@@ -38,7 +38,8 @@
                                 {% if product.tags.count >= 1 %}
                                 <ul style="list-style-type:none">
                                     Tags:{% for tag in product.tags.all %}
-                                    <li class=""><a class="text-decoration-none" href="{% url 'core:tag_detail_view' tag.name %}">#{{tag.name}}</a></li>
+                                    <li class=""><a class="text-decoration-none"
+                                            href="{% url 'core:tag_detail_view' tag.name %}">#{{tag.name}}</a></li>
                                     {%endfor%}
                                 </ul>
                                 {%endif%}
@@ -131,24 +132,38 @@
                     <p class="card-text">{{ i.review }}</p>
                 </div>
             </div>
+            {%empty%}
+            <div class="card border m-3 p-3">
+                <div class="card-body">
+                    <p class="card-text text-center lead">No Review For this Product.</p>
+                </div>
+            </div>
+
+
             {% endfor %}
+
         </div>
 
         <!-- end review accordions -->
 
-        {% if request.user.is_authenticated %}
+
+        <!--product review form -->
         {% if can_review %}
         <div class="col-xl-4 col-lg-10 col-md-12 col-sm-12 p-3 my-2 border shadow-sm" id="review_div">
             <h3 class="display-6">Add Review</h3>
-            <form action="{% url 'core:ajax-add-review' product.pid %}" class="p-3" id="review_Form" method="POST">
+            <form action="" class="p-3" id="review_Form" method="POST">
                 {% csrf_token %}
-                {{ review_form.review }}
-                {{ review_form.rating }}<br>
+                {{ form.review }}
+                {{ form.rating }}<br>
+                {% if request.user.is_authenticated %}
                 <button type="submit" class="btn btn-success mx-2">Submit</button>
+                {%else%}
+                <a href="{% url 'userauth:login' %}" class="btn btn-success mx-2">Login or Register To Review</a>
+                {%endif%}
             </form>
         </div>
-        {% endif %}
-        {% endif %}
+        {%endif%}
+        <!--product review form -->
 
     </div>
 </div>
