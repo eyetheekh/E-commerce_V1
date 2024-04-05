@@ -1,6 +1,8 @@
 {%extends 'core/base.html' %}
 {%load static %}
-{%block title%}{%endblock title%}
+
+{%block title%}Vendors{%endblock title%}
+
 {%block content%}
 <!-- start cards -->
 <div class="container px-4 py-5" id="custom-cards">
@@ -29,7 +31,8 @@
                         <a href="{% url 'core:vendor_detail_view' p.VID %}"
                             class="btn btn-sm btn-outline-secondary">Profile
                         </a>
-                        <a href="{% url 'core:vendor_shop_view' p.VID %}" class="btn btn-sm btn-outline-secondary">Shop</a>
+                        <a href="{% url 'core:vendor_shop_view' p.VID %}"
+                            class="btn btn-sm btn-outline-secondary">Shop</a>
                     </div>
                 </div>
             </div>

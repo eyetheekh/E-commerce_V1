@@ -51,9 +51,9 @@
     <div class="container m-3 mx-auto">
         <div class="row justify-content-center rounded-pill bg-body-tertiary">
             <div class="col-lg-10 py-lg-5 py-md-4 py-sm-3 py-3">
-                <form class="d-flex" role="search">
-                    <input class="form-control rounded-pill py-lg-3 py-md-3 py-sm-3 py-3 me-2" type="search"
-                        placeholder="Search" aria-label="Search" />
+                <form class="d-flex" role="search" method="get" action="{% url 'core:search' %}">
+                    <input required class="form-control rounded-pill py-lg-3 py-md-3 py-sm-3 py-3 me-2" type="search"
+                        placeholder="Search" aria-label="Search" name="q" />
                     <button class="btn btn-dark rounded-pill" type="submit">
                         Search
                     </button>
@@ -278,15 +278,16 @@
                     <div class="card-body">
                         <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
                             style="z-index: 1; margin-top: 25px; margin-left: 40px">
-                            -{{product.get_percentage|floatformat}}% Off
+                            -{{product.discount_percentage|floatformat}}% Off
                         </div>
-                        <h5 class="card-title lead">{{ product.title }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
+                        <h5 class="card-title lead">{{ product.title }} <span>${{product.price_after_discount}}</span>
+                        </h5>
+                        <p class="card-text">{{ product.desc }}</p>
                     </div>
                     <div class="card-footer">
-                        <small class="text-muted">Added: {{ product.date|date }}</small>
+                        <small class="text-muted">Added: {{ product.date_added|date }}</small>
                         <a href="{% url 'core:product_detail_view' product.PID %}"
-                            class="btn btn-primary stretched-link">View</a>
+                            class="btn btn-success stretched-link">View</a>
                     </div>
                 </div>
             </div>

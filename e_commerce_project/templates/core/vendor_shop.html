@@ -1,4 +1,6 @@
 {% extends 'core/base.html' %}
+{%block title%}{{ vendor.title}} | Shop{%endblock title%}
+
 {% block content %}
 {%load static %}
 
@@ -18,9 +20,9 @@
 <div class="container m-2 mx-auto">
     <div class="row justify-content-center rounded-pill ">
         <div class="col-lg-10 py-lg-2 py-md-2 py-sm-1 py-1">
-            <form class="d-flex" role="search">
-                <input class="form-control rounded-pill py-lg-3 py-md-3 py-sm-3 py-3 me-2" type="search"
-                    placeholder="Search For Products" aria-label="Search">
+            <form class="d-flex" role="search" action="{% url 'core:search' %}" method="get">
+                <input required name="q" class="form-control rounded-pill py-lg-3 py-md-3 py-sm-3 py-3 me-2"
+                    type="search" placeholder="Search For Products" aria-label="Search">
                 <button class="btn btn-dark rounded-pill" type="submit">Search</button>
             </form>
         </div>

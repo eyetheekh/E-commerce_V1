@@ -3,8 +3,10 @@ from .models import Cart, Category, Order, Product, Vendor, Product_Images, Prod
 
 def context_fn(request):
     categories = Category.objects.all()
+    vendors = Vendor.objects.all()
     context = {
         'categories_context': categories,
+        'vendors_context': vendors,
     }
 
     return context

@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review
 from taggit.models import Tag
 from .forms import Product_Review_Form
+from django.db.models import Q
 
 
 def home(request):
@@ -115,3 +116,19 @@ def tag_detail_view(request, tag):
         'tag': tag,
     }
     return render(request, 'core/tag_detail_view.html', context)
+
+
+def search(request):
+    query = request.GET.get('q')
+    products = None  # Initialize as empty queryset
+
+    if len(query) > 0:
+        products = Product.objects.filter(
+            Q(title__icontains=query) | Q(desc__icontains=query))
+
+    context = {
+        'query': query,
+        'products': products
+    }
+    
+    return render(request, 'core/search.html', context)

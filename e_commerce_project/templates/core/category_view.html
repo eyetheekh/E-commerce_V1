@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %} {% block content %} {%load static %}
+{% extends 'core/base.html' %} {% block title %}{{category.title}}{%endblock%} {% block content %} {%load static %}
 
 <!-- start category ribbon -->
 <div class="container-fluid m-0 my-3">
@@ -19,8 +19,8 @@
 <div class="container m-2 mx-auto">
   <div class="row justify-content-center rounded-pill">
     <div class="col-lg-10 py-lg-2 py-md-2 py-sm-1 py-1">
-      <form class="d-flex" role="search">
-        <input class="form-control rounded-pill py-lg-3 py-md-3 py-sm-3 py-3 me-2" type="search"
+      <form class="d-flex" role="search" method="get" action="{% url 'core:search' %}">
+        <input class="form-control rounded-pill py-lg-3 py-md-3 py-sm-3 py-3 me-2" type="search" required name="q"
           placeholder="Search For Products" aria-label="Search" />
         <button class="btn btn-dark rounded-pill" type="submit">Search</button>
       </form>
@@ -42,7 +42,7 @@
               <div class="card shadow-sm border-1 rounded-pill rounded-3" style="max-width: 250px">
                 <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
                   style="z-index: 1; margin-left: 20px">
-                  -{{ p.get_percentage|floatformat:0 }}% Off
+                  -{{ p.discount_percentage|floatformat:0 }}% Off
                 </div>
                 <a href="{% url 'core:product_detail_view' p.PID %}" class="text-decoration-none text-dark">
                   <div class="ratio ratio-4x3">
@@ -55,7 +55,7 @@
                   <a href="{% url 'core:product_detail_view' p.PID %}" class="text-decoration-none text-dark">
                     <p class="card-title text-center fs-5">{{ p.title }}</p>
                   </a>
-                  <p class="card-title text-center fs-6">${{ p.price }}</p>
+                  <p class="card-title text-center fs-6">${{ p.price_after_discount }}</p>
                   <p class="card-text text-center">
                     <small class="text-body-secondary fs-6">Sold by {{ p.vendor }}</small>
                   </p>
