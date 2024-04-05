@@ -9,10 +9,10 @@ class ProductImagesAdmin(admin.TabularInline):
 
 class Product_Admin(admin.ModelAdmin):
     inlines = [ProductImagesAdmin]
-    list_display = ['title', 'category', 'price', 'discount_amount',
+    list_display = ['title', 'category', 'vendor', 'price', 'discount_amount', 'tags',
                     'product_status', 'featured_on_home_page',]
-    list_editable = ['category', 'product_status', 'price',
-                     'discount_amount', 'featured_on_home_page',]
+    list_editable = ['category', 'vendor', 'product_status', 'price',
+                     'discount_amount', 'tags', 'featured_on_home_page',]
 
 
 admin.site.register(Product, Product_Admin)

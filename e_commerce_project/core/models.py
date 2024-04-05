@@ -31,7 +31,7 @@ class Vendor(models.Model):
         customUser, related_name='vendor_user', on_delete=models.SET_NULL, null=True)
     address = models.CharField(
         max_length=500, default="ABC 2nd St Kdl Kollm Kerla Ind")
-    contact = models.CharField(max_length=10, default='+91 9999955555')
+    contact = models.CharField(max_length=20, default='+91 9999955555')
     message_response_time = models.CharField(max_length=10, default='2 Days')
     shipping_time = models.CharField(max_length=10, default='4 Days')
     authentic_rating = models.CharField(max_length=10, default='100%')
@@ -74,6 +74,8 @@ class Product(models.Model):
     specifications = models.TextField(null=True, blank=True)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name='product_category')
+    vendor = models.ForeignKey(
+        Vendor, on_delete=models.SET_NULL, null=True, blank=True, related_name='product_vendor')
     image = models.ImageField(upload_to='Product_images')
     # stock = models.IntegerField(default=100)
     in_stock = models.BooleanField(default=True)
@@ -87,16 +89,16 @@ class Product(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, null=True)
 
-    # tags=TaggableManager()
+    tags = TaggableManager(blank=True) 
 
     # use this method for price
 
     def price_after_discount(self):
-        return self.price - self.discount
+        return self.price - self.discount_amount
 
     def discount_percentage(self):
         if self.price > 0:
-            return (self.discount / self.price) * 100
+            return (self.discount_amount / self.price) * 100
         else:
             return 0
 
@@ -114,8 +116,8 @@ class Product_Images(models.Model):
 
     def __str__(self):
         return self.product.title
-    
-    
+
+
 # class ProductImages(models.Model):
 #     images = models.ImageField(
 #         upload_to='product-images', default='product.jpg')
@@ -179,8 +181,8 @@ class Order(models.Model):
         customUser, on_delete=models.CASCADE, related_name='order_of_user')
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name='order_products')
-    
-    Invoice=models.CharField(max_length=20)
+
+    Invoice = models.CharField(max_length=20)
 
     order_quantity = models.IntegerField()
     order_price = models.DecimalField(max_digits=12, decimal_places=2)
