@@ -50,10 +50,51 @@ $(document).ready(function () {
         $(".alert").alert("close");
     }, 5000);
 
+    // add to cart
+    $(".add-to-cart-btn").click(function (e) {
 
-    $("add-to-cart-btn").click(function (e) {
-        
-    })
+        let addButton = $(this);
+        console.log("add-to-cart-btn clicked");
+
+
+        let id = addButton.attr('data-index');
+        console.log("add-to-cart-btn : id :", id);
+
+
+
+        let quantity = $("#no_of_quantity_"+id).val()
+        console.log("quantity :", quantity);
+
+        $.ajax({
+            dataType: 'json',
+            type: 'GET',
+            url: '/add-to-cart',
+
+            data: {
+                "id": id,
+                "quantity": quantity,
+
+            },
+
+            beforeSend: function () {
+                console.log('trying to send data');
+            },
+
+            success: function (res) {
+                console.log('data send');
+                addButton.html("Added To Cart");
+                console.log(res);
+                no_of_items = res.no_of_cart_items;
+                $(".cart-count").text(no_of_items);
+            },
+
+            error: function (response) {
+                console.log(response)
+            }
+        });
+
+    });
+
 });
 
 

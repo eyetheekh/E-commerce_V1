@@ -1,9 +1,11 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review
 from taggit.models import Tag
 from .forms import Product_Review_Form
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -132,3 +134,82 @@ def search(request):
     }
 
     return render(request, 'core/search.html', context)
+
+
+# def add_to_cart(request):
+#     id = request.GET['id']
+#     product = get_object_or_404(Product, id=id)
+
+#     cart_product = {}
+#     cart_product[id] = {
+
+#         'title': product.title,
+#         'quantity': request.GET['quantity'],
+#         'price': str(product.price_after_discount()),
+#     }
+
+#     print(cart_product)
+
+#     if 'cart_data_object' in request.session:
+#         if id in request.session['cart_data_object']:
+#             cart_data = request.session['cart_data_object']
+#             cart_data[id]["quantity"] = cart_product[id]["quantity"]
+#             cart_data.update(cart_data)
+#             request.session['cart_data_object'] = cart_data
+#         else:
+#             cart_data = request.session['cart_data_object']
+#             cart_data.update(cart_product)
+#             request.session['cart_data_object'] = cart_data
+#     else:
+#         request.session['cart_data_object'] = cart_product
+
+#     print(request.session['cart_data_object'])
+
+#     return JsonResponse({
+#         "data": request.session['cart_data_object'],
+#         "no_of_cart_items": len(request.session['cart_data_object']),
+#         "boolean": True
+#     })
+def add_to_cart(request):
+    id = request.GET['id']
+    product = get_object_or_404(Product, id=id)
+    quantity = int(request.GET['quantity'])
+
+    cart_product = {
+        'title': product.title,
+        'quantity': quantity,
+        'price': str(product.price_after_discount()),
+    }
+
+    print(cart_product)
+
+    if 'cart_data_object' in request.session:
+        cart_data = request.session['cart_data_object']
+        if id in cart_data:
+            # If product already exists in cart, increment the quantity
+            # cart_data[id]["quantity"] += int(quantity)
+            cart_data[id]["quantity"] = int(
+                cart_data[id]["quantity"]) + quantity
+
+        else:
+            # If product doesn't exist in cart, add it
+            cart_data[id] = cart_product
+        request.session['cart_data_object'] = cart_data
+    else:
+        request.session['cart_data_object'] = {id: cart_product}
+
+    print(request.session['cart_data_object'])
+
+    return JsonResponse({
+        "data": request.session['cart_data_object'],
+        "no_of_cart_items": len(request.session['cart_data_object']),
+        "boolean": True
+    })
+
+
+def cart_view(request):
+
+    context = {
+
+    }
+    return render(request, 'core/cart.html', context)

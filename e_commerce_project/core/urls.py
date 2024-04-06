@@ -18,4 +18,10 @@ urlpatterns = [
     # search
     path('search/', views.search, name='search'),
 
+    # ajax- add to cart
+    path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
+    
+    #cart view
+    path('cart/', views.cart_view, name='cart_view'),
+
 ]

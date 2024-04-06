@@ -37,12 +37,13 @@
       </ul>
       <!-- ################## -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'core:cart_view' %}" aria-disabled="true"><i class="bi bi-cart2"></i><span
+              class="cart-count">{{cart_items_count_context}}</span></a>
+        </li>
         {% if request.user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link logout" href="" aria-disabled="true">Cart</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link logout" href="" aria-disabled="true">Profile</a>
+          <a class="nav-link " href="" aria-disabled="true">Profile</a>
         </li>
         <li class="nav-item">
           <a class="nav-link logout" href="{% url 'userauth:logout' %}" aria-disabled="true">Logout</a>

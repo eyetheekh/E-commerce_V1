@@ -48,6 +48,10 @@
                         </p>
                         <p><small class="">Sold by: {{ product.vendor }}</small></p>
                         <!--  -->
+                        <p class="text-center">
+                            <input type="number" id="no_of_quantity_{{product.id}}" value="1"
+                                class="form-control d-inline-block w-25">
+                        </p>
 
                         <!--  -->
                         <div class="btn-group">
@@ -193,10 +197,13 @@
                                     <button type="button" class="btn btn-outline-secondary btn-sm">
                                         Buy
                                     </button>
+                                    <!--  -->
+                                    <input type="hidden" id="no_of_quantity_{{i.id}}" value="1">
                                     <button type="button" class="btn btn-outline-secondary btn-sm add-to-cart-btn"
                                         data-index="{{i.id}}" id="add-to-cart-btn">
                                         Add To Cart
                                     </button>
+                                    <!--  -->
                                 </div>
                             </div>
                         </div>

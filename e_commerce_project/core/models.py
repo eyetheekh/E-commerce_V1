@@ -160,22 +160,25 @@ class Product_Images(models.Model):
 
 
 class Cart(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name='cart_products')
-    quantity = models.IntegerField()
+    pass
+#     product = models.ForeignKey(
+#         Product, on_delete=models.CASCADE, related_name='cart_products')
+#     quantity = models.IntegerField()
 
-    date_added = models.DateTimeField(auto_now_add=True)
+#     date_added = models.DateTimeField(auto_now_add=True)
 
-    temporary = models.BooleanField(default=True)
+#     temporary = models.BooleanField(default=True)
+#     user = models.ForeignKey(
+#         customUser, on_delete=models.CASCADE, related_name='cart_user', null=True, blank=True)
 
-    def __str__(self):
-        return self.product.title
+#     def __str__(self):
+#         return self.product.title
 
-    def subtotal(self):
-        return self.quantity * self.product.price_after_discount()
+#     def subtotal(self):
+#         return self.quantity * self.product.price_after_discount()
 
-    def cart_total_amount(self):
-        return sum(i.subtotal() for i in self)
+#     def cart_total_amount(self):
+#         return sum(i.subtotal() for i in self)
 
 
 class Order(models.Model):
