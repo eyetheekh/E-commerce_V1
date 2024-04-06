@@ -89,7 +89,7 @@ class Product(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, null=True)
 
-    tags = TaggableManager(blank=True) 
+    tags = TaggableManager(blank=True)
 
     # use this method for price
 
@@ -165,6 +165,8 @@ class Cart(models.Model):
     quantity = models.IntegerField()
 
     date_added = models.DateTimeField(auto_now_add=True)
+
+    temporary = models.BooleanField(default=True)
 
     def __str__(self):
         return self.product.title

@@ -130,5 +130,5 @@ def search(request):
         'query': query,
         'products': products
     }
-    
+
     return render(request, 'core/search.html', context)
