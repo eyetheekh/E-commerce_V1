@@ -20,8 +20,15 @@ urlpatterns = [
 
     # ajax- add to cart
     path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
-    
-    #cart view
+
+    # cart view
     path('cart/', views.cart_view, name='cart_view'),
+
+    # ajax- del product from cart
+    path('del-product-from-cart/', views.delete_product_from_cart,
+         name='delete_product_from_cart'),
+
+    # ajax update from cart
+    path('update-from-cart/', views.update_from_cart, name='update_from_cart'),
 
 ]

@@ -6,6 +6,7 @@ from taggit.models import Tag
 from .forms import Product_Review_Form
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
 
 
 def home(request):
@@ -181,7 +182,7 @@ def add_to_cart(request):
         'price': str(product.price_after_discount()),
     }
 
-    print(cart_product)
+    # print(cart_product)
 
     if 'cart_data_object' in request.session:
         cart_data = request.session['cart_data_object']
@@ -198,7 +199,7 @@ def add_to_cart(request):
     else:
         request.session['cart_data_object'] = {id: cart_product}
 
-    print(request.session['cart_data_object'])
+    # print(request.session['cart_data_object'])
 
     return JsonResponse({
         "data": request.session['cart_data_object'],
@@ -208,8 +209,157 @@ def add_to_cart(request):
 
 
 def cart_view(request):
+    list_of_products_in_cart = list()
+
+    if 'cart_data_object' not in request.session:
+        messages.warning(
+            request, 'Your Cart is empty, Add items to Your Cart!')
+        return redirect('core:home')
+
+    else:
+        # print(request.session['cart_data_object'])
+        id_of_products = [i for i in request.session['cart_data_object']]
+
+        list_of_products_in_cart = [
+            Product.objects.get(id=i) for i in id_of_products]
+        # print(list_of_products_in_cart)
+
+        cart_dict = dict()
+
+        for i in list_of_products_in_cart:
+            cart_dict[i] = request.session['cart_data_object'][str(
+                i.id)]['quantity']
+
+        # print('cart_dict: ', cart_dict)
+
+        cart_dict_with_price_and_qty = dict()
+        for i, j in cart_dict.items():
+            # print(i, j)
+            cart_dict_with_price_and_qty[i] = {
+                "quantity": j,
+                "sub_total": i.price_after_discount() * int(j)
+            }
+
+        # print('cart____', cart_dict_with_price_and_qty)
+
+        cart_total = 0
+        for i, j in cart_dict_with_price_and_qty.items():
+            # print(i, j)
+            cart_total += j['sub_total']
+
+        total_cart_items = len(list_of_products_in_cart)
 
     context = {
-
+        'total_cart_items': total_cart_items,
+        'cart_dict_with_price_and_qty': cart_dict_with_price_and_qty,
+        'cart_total': cart_total,
     }
     return render(request, 'core/cart.html', context)
+
+
+def delete_product_from_cart(request):
+    id = request.GET['id']
+    # print(id)
+
+    temp_dict = request.session['cart_data_object']
+    temp_dict.pop(id)
+    request.session['cart_data_object'] = temp_dict
+
+    ####################################################
+
+    id_of_products = [i for i in request.session['cart_data_object']]
+
+    list_of_products_in_cart = [
+        Product.objects.get(id=i) for i in id_of_products]
+    # print(list_of_products_in_cart)
+
+    cart_dict = dict()
+
+    for i in list_of_products_in_cart:
+        cart_dict[i] = request.session['cart_data_object'][str(
+            i.id)]['quantity']
+
+    # print('cart_dict: ', cart_dict)
+
+    cart_dict_with_price_and_qty = dict()
+    for i, j in cart_dict.items():
+        # print(i, j)
+        cart_dict_with_price_and_qty[i] = {"quantity": j,
+                                           "sub_total": i.price_after_discount() * int(j)}
+
+    # print('cart____', cart_dict_with_price_and_qty)
+
+    cart_total = 0
+    for i, j in cart_dict_with_price_and_qty.items():
+        # print(i, j)
+        cart_total += j['sub_total']
+
+    total_cart_items = len(list_of_products_in_cart)
+
+    context = render_to_string('core/async/cart_async.html', {
+        'total_cart_items': total_cart_items,
+        'cart_dict_with_price_and_qty': cart_dict_with_price_and_qty,
+        'cart_total': cart_total,
+    })
+
+    return JsonResponse({
+        'context': context,
+        'total_cart_items': total_cart_items
+    })
+
+
+def update_from_cart(request):
+    id = request.GET.get('id')
+    quantity = request.GET['quantity']
+
+    temp_dict = request.session['cart_data_object']
+    print(temp_dict[id])
+    temp_dict[id]['quantity'] = quantity
+    request.session['cart_data_object'] = temp_dict
+
+    ####################################################
+
+    id_of_products = [i for i in request.session['cart_data_object']]
+
+    list_of_products_in_cart = [
+        Product.objects.get(id=i) for i in id_of_products]
+    # print(list_of_products_in_cart)
+
+    cart_dict = dict()
+
+    for i in list_of_products_in_cart:
+        cart_dict[i] = request.session['cart_data_object'][str(
+            i.id)]['quantity']
+
+    # # print('cart_dict: ', cart_dict)
+
+    cart_dict_with_price_and_qty = dict()
+    for i, j in cart_dict.items():
+        # print(i, j)
+        cart_dict_with_price_and_qty[i] = {"quantity": j,
+                                           "sub_total": i.price_after_discount() * int(j)}
+
+    # # print('cart____', cart_dict_with_price_and_qty)
+
+    cart_total = 0
+    for i, j in cart_dict_with_price_and_qty.items():
+        # print(i, j)
+        cart_total += j['sub_total']
+
+    total_cart_items = len(list_of_products_in_cart)
+
+    context = render_to_string('core/async/cart_async.html', {
+        'total_cart_items': total_cart_items,
+        'cart_dict_with_price_and_qty': cart_dict_with_price_and_qty,
+        'cart_total': cart_total,
+    })
+
+    return JsonResponse({
+        'context': context,
+        'total_cart_items': total_cart_items,
+        "bool": True
+    })
+
+
+def checkout_view(request):
+    return render(request, 'core/')

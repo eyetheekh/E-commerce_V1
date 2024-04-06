@@ -1,13 +1,11 @@
 {% extends 'core/base.html' %} {% load static %} {% block content %}
-<div class="container bg-body-tertiary" id="cart-list">
+<div class="container bg-body-tertiary" id="cart_async">
   <div class="row my-4 align-items-stretch">
     <!-- Product Table -->
     <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12">
       <p class="display-6 m-2">Cart</p>
       <p class="lead m-2">
-        <small
-          >There are {{total_cart_items}} product{{total_cart_items|pluralize}} in your cart.</small
-        >
+        <small>There are {{total_cart_items}} product{{total_cart_items|pluralize}} in your cart.</small>
       </p>
       <table class="table table-bordered table-hover">
         <thead class="table-secondary">
@@ -18,63 +16,42 @@
             <th scope="col">Price</th>
             <th scope="col" class="text-center">Quantity</th>
             <th scope="col">Subtotal</th>
-            <th scope="col" class="text-center">Refresh</th>
             <th scope="col" class="text-center">Remove</th>
           </tr>
         </thead>
         <tbody>
-          {% for product_id, item in cart_data.items %}
+          {% for product,price_and_quantity in cart_dict_with_price_and_qty.items %}
           <tr>
             <td>{{ forloop.counter }}</td>
             <td>
-              <a
-                class="text-dark"
-                href="{% url 'core:product-details' item.pid %}"
-              >
-                {{ item.title }}
+              <a class="text-dark" href="{% url 'core:product_detail_view' product.PID %}">
+                {{ product.title }}
               </a>
             </td>
             <td class="p-1 text-center">
-              <a href="{% url 'core:product-details' item.pid %}">
-                <img
-                  src="{{ item.image }}"
-                  class="img-fluid img-thumbnail"
-                  style="max-width: 150px; max-height: auto"
-                  alt=""
-                />
+              <a href="{% url 'core:product_detail_view' product.PID %}">
+                <img src="{{ product.image.url }}" class="img-fluid img-thumbnail"
+                  style="max-width: 150px; max-height: auto" alt="" />
               </a>
             </td>
-            <td>${{ item.price|floatformat }}</td>
+            <td>${{ product.price_after_discount|floatformat }}</td>
             <td class="text-center">
               <div class="input-group input-group-sm">
-                <input
-                  type="number"
-                  placeholder="Qty"
-                  class="form-control text-center m-0 product-quantity-{{product_id}}"
-                  style="width: 50%"
-                  name=""
-                  id=""
-                  value="{{ item.quantity }}"
-                />
+                <!--  -->
+                <input class="form-control w-50 " type="number" id="no_of_quantity_{{product.id}}"
+                  value="{{ price_and_quantity.quantity }}">
+                <button class="btn btn-success btn-sm update-product" data-id="{{product.id}}">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <!--  -->
               </div>
             </td>
 
             <!-- Calculate subtotal -->
-            <td>${% widthratio item.price 1 item.quantity %}</td>
+            <td>${{price_and_quantity.sub_total}}</td>
             <!-- Calculate subtotal -->
             <td class="text-center">
-              <button
-                class="btn btn-success btn-sm update-product"
-                data-product="{{product_id}}"
-              >
-                <i class="bi bi-arrow-clockwise"></i>
-              </button>
-            </td>
-            <td class="text-center">
-              <button
-                class="btn btn-danger btn-sm delete-product"
-                data-product="{{product_id}}"
-              >
+              <button class="btn btn-danger btn-sm delete-product" data-id="{{product.id}}">
                 <i class="bi bi-trash-fill"></i>
               </button>
             </td>
@@ -85,17 +62,13 @@
     </div>
 
     <!-- Summary of Cart -->
-    <div
-      class="col-xl-4 col-lg-4 col-md-12 col-sm-12 bg-body-tertiary p-4 rounded"
-    >
+    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 bg-body-tertiary p-4 rounded">
       <h4 class="text-dark mb-4">Summary of Cart</h4>
       <hr class="bg-light mb-4" />
       <!-- Subtotal -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-dark">Subtotal:</span>
-        <span class="text-dark font-weight-bold"
-          >${{cart_total|floatformat:2}}</span
-        >
+        <span class="text-dark font-weight-bold">${{cart_total|floatformat:2}}</span>
       </div>
       <!-- Shipping -->
       <div class="d-flex justify-content-between align-items-center mb-3">
@@ -105,25 +78,17 @@
       <!-- Total -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-dark">Total:</span>
-        <span class="text-dark font-weight-bold"
-          >${{cart_total|floatformat:2}}</span
-        >
+        <span class="text-dark font-weight-bold">${{cart_total|floatformat:2}}</span>
       </div>
       <hr class="bg-light mb-4" />
       {% if total_cart_items %}
-      <a href="{% url 'core:checkout' %}" class="btn btn-info btn-block">
+      <a href="" class="btn btn-info btn-block">
         Proceed to Checkout
       </a>
       {%else%}
-      <a
-        href="{% url 'core:products-list' %}"
-        class="btn btn-success btn-block"
-      >
+      <a href="{% url 'core:home' %}" class="btn btn-success btn-block m-2">
         Continue Shopping
       </a>
-      <button type="button" class="btn btn-success btn-block">
-        Update Cart
-      </button>
       {%endif%}
     </div>
   </div>
