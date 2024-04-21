@@ -458,7 +458,15 @@ def checkout_view(request):
                 price=i.price,
                 total=j['sub_total'],
             )
-        other_orders = CartOrderItems.objects.exclude(order=order)
+
+        # deleting items that is not assosiated with the current order and those which are only of the current user
+        other_order_items = CartOrderItems.objects.exclude(
+            order=order).filter(order__user=request.user)
+        other_order_items.delete()
+
+        # deleting order that is not assosiated with the current order and those which are only of the current user
+        other_orders = Order.objects.exclude(
+            pk=order.pk).filter(user=request.user)
         other_orders.delete()
 
     paypal_dict = {
