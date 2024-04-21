@@ -512,5 +512,76 @@ def order_failed(request):
     return render(request, 'core/order_failed.html')
 
 
+@login_required
+def buy_now(request, PID):
+    product = get_object_or_404(Product, PID=PID)
+
+    if request.method == "POST":
+        address_form = Address_Form(request.POST)
+        if address_form.is_valid():
+            new_address = address_form.save(commit=False)
+            new_address.user = request.user
+            if new_address.default_address:
+                temp_address = Address.objects.filter(user=request.user)
+                temp_address.update(default_address=False)
+            new_address.save()
+            messages.success(request, 'Address added!')
+
+    try:
+        default_address = Address.objects.get(
+            user=request.user, default_address=True)
+    except:
+        default_address = None
+
+    address_form = Address_Form()
+
+    order, created_ = Order.objects.get_or_create(
+        user=request.user,
+        order_quantity=1,
+        order_price=product.price_after_discount()
+    )
+
+    order_item = CartOrderItems.objects.get_or_create(
+        order=order,
+        item=product,
+        quantity=1,
+        price=product.price_after_discount(),
+        total=product.price_after_discount(),
+    )
+
+    # deleting items that is not assosiated with the current order and those which are only of the current user
+    other_order_items = CartOrderItems.objects.exclude(
+        order=order).filter(order__user=request.user, order__paid_status=False)
+    other_order_items.delete()
+
+    # deleting order that is not assosiated with the current order and those which are only of the current user
+    other_orders = Order.objects.exclude(
+        pk=order.pk).filter(user=request.user, paid_status=False)
+    other_orders.delete()
+
+    paypal_dict = {
+        "business": "bizaytheeh@gmail.com",
+        "amount": product.price_after_discount(),
+        "item_name": str(order.Invoice),
+        "invoice": "INV:"+str(order.Invoice),
+        "notify_url": request.build_absolute_uri(reverse('core:paypal-ipn')),
+        "return": request.build_absolute_uri(reverse('core:order-success')),
+        "cancel_return": request.build_absolute_uri(reverse('core:order-failed')),
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+
+    context = {
+        "product": product,
+        "default_address": default_address,
+        "address_form": address_form,
+        'form': form,
+        'total_cart_items': 1,
+        'cart_total': product.price_after_discount(),
+    }
+    return render(request, 'core/buy_now.html', context)
+
+
 def dashboard(request):
     return render(request, 'core/dashboard.html')

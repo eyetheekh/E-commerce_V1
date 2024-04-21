@@ -44,5 +44,6 @@ urlpatterns = [
 
     path('dashboard/', views.dashboard, name='dashboard'),
 
+    path('buy/<PID>/', views.buy_now, name='buy_now'),
 
 ]

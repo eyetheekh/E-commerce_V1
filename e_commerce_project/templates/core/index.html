@@ -201,11 +201,9 @@
                                 <p class="card-text">{{i.description|truncatechars:30}}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group bg-body-tertiary mt-auto">
-
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        <a href="{% url 'core:buy_now' i.PID %}" class="btn btn-sm btn-outline-secondary">
                                             Buy
-                                        </button>
-
+                                        </a>
                                         <input type="hidden" id="no_of_quantity_{{i.id}}" value="1">
                                         <button type="button" class="btn btn-outline-secondary btn-sm add-to-cart-btn"
                                             data-index="{{i.id}}" id="add-to-cart-btn">
