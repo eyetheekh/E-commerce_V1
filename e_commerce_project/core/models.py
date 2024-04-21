@@ -138,7 +138,6 @@ class Product_Images(models.Model):
 #         max_length=20, choices=order_Status_Choices, default='processing')
 
 
-
 class Order(models.Model):
     user = models.ForeignKey(
         customUser, on_delete=models.CASCADE, related_name='order_of_user')
@@ -155,12 +154,11 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.id} {self.product.title}"
+        return f"{self.Invoice}"
 
 
 class CartOrderItems(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    invoice_no = models.CharField(max_length=200)
     item = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
     price = models.DecimalField(
@@ -170,6 +168,9 @@ class CartOrderItems(models.Model):
 
     class Meta:
         verbose_name_plural = "Order Items"
+
+    def __str__(self):
+        return f"{self.order.Invoice} :: {self.item.title}"
 
 
 class Product_Review(models.Model):

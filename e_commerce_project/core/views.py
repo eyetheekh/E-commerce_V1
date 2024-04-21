@@ -443,19 +443,29 @@ def checkout_view(request):
 
         total_cart_items = len(list_of_products_in_cart)
 
-        # order = Order.objects.create(
-        #     user=request.user,
-        #     order_quantity=total_cart_items,
-        #     order_price=cart_total,
-        # )
+        order, created_ = Order.objects.get_or_create(
+            user=request.user,
+            order_quantity=total_cart_items,
+            order_price=cart_total
+        )
 
-        # for i in 
+        for i, j in cart_dict_with_price_and_qty.items():
+            print(i, '::', j)
+            order_item = CartOrderItems.objects.get_or_create(
+                order=order,
+                item=i,
+                quantity=j['quantity'],
+                price=i.price,
+                total=j['sub_total'],
+            )
+        other_orders = CartOrderItems.objects.exclude(order=order)
+        other_orders.delete()
 
     paypal_dict = {
         "business": "bizaytheeh@gmail.com",
         "amount": cart_total,
-        "item_name": "TEST",
-        "invoice": "IN-33",
+        "item_name": str(order.Invoice),
+        "invoice": "INV:"+str(order.Invoice),
         "notify_url": request.build_absolute_uri(reverse('core:paypal-ipn')),
         "return": request.build_absolute_uri(reverse('core:order-success')),
         "cancel_return": request.build_absolute_uri(reverse('core:order-failed')),
