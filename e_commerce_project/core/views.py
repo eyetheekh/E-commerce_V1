@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.urls import reverse
-from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review, Address
+from .models import Category, Product, Vendor, Product_Images, Product_Review, Address, Order, CartOrderItems
 from taggit.models import Tag
 from .forms import Product_Review_Form, Address_Form
 from django.db.models import Q
@@ -442,6 +442,14 @@ def checkout_view(request):
             cart_total += j['sub_total']
 
         total_cart_items = len(list_of_products_in_cart)
+
+        # order = Order.objects.create(
+        #     user=request.user,
+        #     order_quantity=total_cart_items,
+        #     order_price=cart_total,
+        # )
+
+        # for i in 
 
     paypal_dict = {
         "business": "bizaytheeh@gmail.com",

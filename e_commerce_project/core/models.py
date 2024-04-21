@@ -138,46 +138,12 @@ class Product_Images(models.Model):
 #         max_length=20, choices=order_Status_Choices, default='processing')
 
 
-# class Cart():
-#     order = models.ForeignKey(
-#         Order, on_delete=models.CASCADE, null=True, blank=True, related_name='cart_of_user')
-#     product = models.ForeignKey(
-#         Product, on_delete=models.CASCADE, related_name='cart_order_products')
-#     quantity = models.IntegerField(default=0)
-
-#     def get_cart_total(self):
-#         return self.quantity * self.product.price_after_discount()
-
-
-class Cart(models.Model):
-    pass
-#     product = models.ForeignKey(
-#         Product, on_delete=models.CASCADE, related_name='cart_products')
-#     quantity = models.IntegerField()
-
-#     date_added = models.DateTimeField(auto_now_add=True)
-
-#     temporary = models.BooleanField(default=True)
-#     user = models.ForeignKey(
-#         customUser, on_delete=models.CASCADE, related_name='cart_user', null=True, blank=True)
-
-#     def __str__(self):
-#         return self.product.title
-
-#     def subtotal(self):
-#         return self.quantity * self.product.price_after_discount()
-
-#     def cart_total_amount(self):
-#         return sum(i.subtotal() for i in self)
-
 
 class Order(models.Model):
     user = models.ForeignKey(
         customUser, on_delete=models.CASCADE, related_name='order_of_user')
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name='order_products')
 
-    Invoice = models.CharField(max_length=20)
+    Invoice = models.AutoField(primary_key=True)
 
     order_quantity = models.IntegerField()
     order_price = models.DecimalField(max_digits=12, decimal_places=2)

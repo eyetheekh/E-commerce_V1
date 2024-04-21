@@ -1,4 +1,4 @@
-from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review
+from .models import Category, Order, Product, Vendor, Product_Images, Product_Review
 
 
 def context_fn(request):
