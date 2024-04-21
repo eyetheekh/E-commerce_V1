@@ -118,16 +118,6 @@ class Product_Images(models.Model):
         return self.product.title
 
 
-# class ProductImages(models.Model):
-#     images = models.ImageField(
-#         upload_to='product-images', default='product.jpg')
-#     product = models.ForeignKey(
-#         Product, related_name='p_images', on_delete=models.SET_NULL, null=True)
-#     date = models.DateTimeField(auto_now_add=True)
-
-#     class Meta:
-#         verbose_name_plural = "Product_Images"
-
 ########################################################################
 ########################################################################
 ########################################################################
@@ -200,6 +190,20 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.id} {self.product.title}"
+
+
+class CartOrderItems(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    invoice_no = models.CharField(max_length=200)
+    item = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+    price = models.DecimalField(
+        max_digits=9999999, decimal_places=2, default="1.99")
+    total = models.DecimalField(
+        max_digits=9999999, decimal_places=2, default="1.99")
+
+    class Meta:
+        verbose_name_plural = "Order Items"
 
 
 class Product_Review(models.Model):

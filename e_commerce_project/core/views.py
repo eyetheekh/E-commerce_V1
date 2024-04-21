@@ -1,12 +1,14 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.urls import reverse
 from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review, Address
 from taggit.models import Tag
 from .forms import Product_Review_Form, Address_Form
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
+from paypal.standard.forms import PayPalPaymentsForm
 
 
 def home(request):
@@ -362,23 +364,44 @@ def update_from_cart(request):
 
 
 @login_required
-def checkout_view(request):
+def update_address(request):
     if request.method == "POST":
-        form = Address_Form(request.POST)
-        if form.is_valid():
-            new_address = form.save(commit=False)
+        address_form = Address_Form(request.POST)
+        if address_form.is_valid():
+            new_address = address_form.save(commit=False)
             new_address.user = request.user
             if new_address.default_address:
-                Address.objects.update(default_address=False)
+                temp_address = Address.objects.filter(user=request.user)
+                temp_address.update(default_address=False)
+            new_address.save()
+            messages.success(request, 'Address added!')
+            return redirect('core:checkout_view')
+
+    address_form = Address_Form()
+    return render(request, 'core/update_address.html', {'form': address_form})
+
+
+@login_required
+def checkout_view(request):
+    if request.method == "POST":
+        address_form = Address_Form(request.POST)
+        if address_form.is_valid():
+            new_address = address_form.save(commit=False)
+            new_address.user = request.user
+            if new_address.default_address:
+                temp_address = Address.objects.filter(user=request.user)
+                temp_address.update(default_address=False)
             new_address.save()
             messages.success(request, 'Address added!')
 
-    form = Address_Form()
+    address_form = Address_Form()
 
     all_address = Address.objects.filter(user=request.user)
-
-    default_address = Address.objects.get(
-        user=request.user, default_address=True)
+    try:
+        default_address = Address.objects.get(
+            user=request.user, default_address=True)
+    except:
+        default_address = None
 
     list_of_products_in_cart = list()
 
@@ -420,18 +443,36 @@ def checkout_view(request):
 
         total_cart_items = len(list_of_products_in_cart)
 
+    paypal_dict = {
+        "business": "bizaytheeh@gmail.com",
+        "amount": cart_total,
+        "item_name": "TEST",
+        "invoice": "IN-33",
+        "notify_url": request.build_absolute_uri(reverse('core:paypal-ipn')),
+        "return": request.build_absolute_uri(reverse('core:order-success')),
+        "cancel_return": request.build_absolute_uri(reverse('core:order-failed')),
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+
     context = {
         'total_cart_items': total_cart_items,
         'cart_dict_with_price_and_qty': cart_dict_with_price_and_qty,
         'cart_total': cart_total,
         'form': form,
+        'address_form': address_form,
         'default_address': default_address,
     }
     return render(request, 'core/checkout.html', context)
 
 
-def place_order(request):
-    return render(request, 'core/order_details.html')
+def order_success(request):
+    return render(request, 'core/order_success.html')
+
+
+def order_failed(request):
+    return render(request, 'core/order_failed.html')
 
 
 def dashboard(request):
