@@ -461,12 +461,12 @@ def checkout_view(request):
 
         # deleting items that is not assosiated with the current order and those which are only of the current user
         other_order_items = CartOrderItems.objects.exclude(
-            order=order).filter(order__user=request.user)
+            order=order).filter(order__user=request.user, order__paid_status=False)
         other_order_items.delete()
 
         # deleting order that is not assosiated with the current order and those which are only of the current user
         other_orders = Order.objects.exclude(
-            pk=order.pk).filter(user=request.user)
+            pk=order.pk).filter(user=request.user, paid_status=False)
         other_orders.delete()
 
     paypal_dict = {
@@ -493,8 +493,19 @@ def checkout_view(request):
     return render(request, 'core/checkout.html', context)
 
 
+@login_required
 def order_success(request):
-    return render(request, 'core/order_success.html')
+    order = Order.objects.filter(user=request.user).latest('order_date')
+    order.paid_status = True
+    order.save()
+
+    ordered_items = CartOrderItems.objects.filter(order=order)
+
+    context = {
+        'ordered_items': ordered_items,
+        'order': order
+    }
+    return render(request, 'core/order_success.html', context)
 
 
 def order_failed(request):
