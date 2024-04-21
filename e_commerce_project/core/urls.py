@@ -31,4 +31,14 @@ urlpatterns = [
     # ajax update from cart
     path('update-from-cart/', views.update_from_cart, name='update_from_cart'),
 
+    # checkout
+    path('checkout/', views.checkout_view, name='checkout_view'),
+
+    # place_order
+    path('order/', views.place_order, name='place_order'),
+    
+    path('dashboard/', views.dashboard, name='dashboard'),
+
+
+
 ]

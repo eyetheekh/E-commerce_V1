@@ -1,9 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review
+from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review, Address
 from taggit.models import Tag
-from .forms import Product_Review_Form
+from .forms import Product_Review_Form, Address_Form
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
@@ -361,5 +361,78 @@ def update_from_cart(request):
     })
 
 
+@login_required
 def checkout_view(request):
-    return render(request, 'core/')
+    if request.method == "POST":
+        form = Address_Form(request.POST)
+        if form.is_valid():
+            new_address = form.save(commit=False)
+            new_address.user = request.user
+            if new_address.default_address:
+                Address.objects.update(default_address=False)
+            new_address.save()
+            messages.success(request, 'Address added!')
+
+    form = Address_Form()
+
+    all_address = Address.objects.filter(user=request.user)
+
+    default_address = Address.objects.get(
+        user=request.user, default_address=True)
+
+    list_of_products_in_cart = list()
+
+    if 'cart_data_object' not in request.session:
+        messages.warning(
+            request, 'Your Cart is empty, Add items to Your Cart!')
+        return redirect('core:home')
+
+    else:
+        # print(request.session['cart_data_object'])
+        id_of_products = [i for i in request.session['cart_data_object']]
+
+        list_of_products_in_cart = [
+            Product.objects.get(id=i) for i in id_of_products]
+        # print(list_of_products_in_cart)
+
+        cart_dict = dict()
+
+        for i in list_of_products_in_cart:
+            cart_dict[i] = request.session['cart_data_object'][str(
+                i.id)]['quantity']
+
+        # print('cart_dict: ', cart_dict)
+
+        cart_dict_with_price_and_qty = dict()
+        for i, j in cart_dict.items():
+            # print(i, j)
+            cart_dict_with_price_and_qty[i] = {
+                "quantity": j,
+                "sub_total": i.price_after_discount() * int(j)
+            }
+
+        # print('cart____', cart_dict_with_price_and_qty)
+
+        cart_total = 0
+        for i, j in cart_dict_with_price_and_qty.items():
+            # print(i, j)
+            cart_total += j['sub_total']
+
+        total_cart_items = len(list_of_products_in_cart)
+
+    context = {
+        'total_cart_items': total_cart_items,
+        'cart_dict_with_price_and_qty': cart_dict_with_price_and_qty,
+        'cart_total': cart_total,
+        'form': form,
+        'default_address': default_address,
+    }
+    return render(request, 'core/checkout.html', context)
+
+
+def place_order(request):
+    return render(request, 'core/order_details.html')
+
+
+def dashboard(request):
+    return render(request, 'core/dashboard.html')

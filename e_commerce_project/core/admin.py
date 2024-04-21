@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review
+from .models import Cart, Category, Order, Product, Vendor, Product_Images, Product_Review,Address
 
 
 class ProductImagesAdmin(admin.TabularInline):
@@ -13,6 +13,10 @@ class Product_Admin(admin.ModelAdmin):
                     'product_status', 'featured_on_home_page',]
     list_editable = ['category', 'vendor', 'product_status', 'price',
                      'discount_amount', 'tags', 'featured_on_home_page',]
+    
+
+class AddressAdmin(admin.ModelAdmin):
+    list_display=['user','address','default_address']
 
 
 admin.site.register(Product, Product_Admin)
@@ -22,3 +26,4 @@ admin.site.register(Order)
 admin.site.register(Vendor)
 admin.site.register(Product_Images)
 admin.site.register(Product_Review)
+admin.site.register(Address,AddressAdmin)

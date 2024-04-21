@@ -81,7 +81,7 @@
             </div>
             <hr class="bg-light mb-4" />
             {% if total_cart_items %}
-            <a href="" class="btn btn-info btn-block">
+            <a href="{% url 'core:checkout_view' %}" class="btn btn-info btn-block">
                 Proceed to Checkout
             </a>
             {%else%}

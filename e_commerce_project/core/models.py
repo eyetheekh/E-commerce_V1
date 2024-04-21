@@ -212,3 +212,15 @@ class Product_Review(models.Model):
 
     def __str__(self):
         return self.product.title
+
+
+class Address(models.Model):
+    user = models.ForeignKey(
+        customUser, on_delete=models.CASCADE)
+    address = models.TextField()
+    default_address = models.BooleanField(default=True)
+    contact = models.CharField(max_length=20)
+    email = models.EmailField()
+
+    def __str__(self):
+        return self.address
