@@ -1,0 +1,153 @@
+{% extends 'core/base.html' %} {% load static %} {% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-xl-2 col-sm-12 col-md-3 col-lg-2 bg-body-tertiary">
+      <div class="p-3">
+        <a href="" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+          <svg class="bi pe-none me-2" width="30" height="24"></svg>
+          <span class="fs-5">Profile</span>
+        </a>
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li>
+            <a href="{% url 'core:dashboard' %}" id="order" class="nav-link link-body-emphasis">
+              <svg class="bi pe-none me-2" width="14" height="14">
+                <use xlink:href="#speedometer2"></use>
+              </svg>
+              Orders
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'core:dashboard-address' %}" id="address" class="nav-link link-body-emphasis">
+              <svg class="bi pe-none me-2" width="14" height="14">
+                <use xlink:href="#grid"></use>
+              </svg>
+              Address
+            </a>
+          </li>
+          <li>
+            <a href="" id="address" class="nav-link link-body-emphasis">
+              <svg class="bi pe-none me-2" width="14" height="14">
+                <use xlink:href="#grid"></use>
+              </svg>
+              My Reviews
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link link-body-emphasis">
+              <svg class="bi pe-none me-2" width="14" height="14">
+                <use xlink:href="#grid"></use>
+              </svg>
+              Settings
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'userauth:logout' %}" class="nav-link link-body-emphasis">
+              <svg class="bi pe-none me-2" width="14" height="14">
+                <use xlink:href="#grid"></use>
+              </svg>
+              Logout
+            </a>
+          </li>
+        </ul>
+        <hr />
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="col-xl-10 col-sm-12 col-md-9 col-lg-10 my-3 p-3">
+      <!-- <div class="container">
+        <div class="row bg-dark">
+          <div class="col bg-info">
+            <p class="display-6">Welcome {{request.user}}</p>
+          </div>
+          <div class="col bg-secondary">f</div>
+        </div>
+      </div> -->
+
+      <div class="row">
+        <div class="col-12">
+          <p class="display-6">Welcome {{request.user}}. <span class="lead">Your Orders</span></p>
+          <div id="orders-section">
+            <table class="table table-bordered table-hover">
+              <thead class="table-secondary">
+                <tr>
+                  <th scope="col">INVOICE NO</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Products</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Paid Status</th>
+                  <th scope="col">View</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i,j in order_and_ordered_items.items %}
+                <tr>
+                  <td>{{ i.Invoice }}</td>
+                  <td>{{ i.order_date }}</td>
+                  <td>
+                    {% if j.count > 1 %}
+                    {% for k in j %}
+                    {{ k|title }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    {% for k in j %}
+                    {{ k|title }}
+                    {% endfor %}
+                    {% endif %}</td>
+                  <td>{{ i.order_status|title }}</td>
+                  <td>${{ i.order_price }}</td>
+                  {% if i.paid_status %}
+                  <td class="text-success fw-bold">Paid</td>
+                  {%else%}
+                  <td class="text-danger fw-bold">Unpaid</td>
+                  {%endif%}
+                  <td>
+                    <a href="{% url 'core:order-details' i.Invoice %}">View</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div id="address-section" class="rounded rounded-3 bg-body-tertiary p-3 m-2">
+            <div class="border border-2 p-3 text-center">
+              <p class="lead fw-bold">Billing Address</p>
+              <div class="align-middle text-left">
+                <form action="" method="post" class="w-75">
+                  {%csrf_token%}
+                  <input name="address" type="text" placeholder="Address" class="form-control w-100" required /><br />
+                  <input type="text" name="phone" placeholder="Phone" class="form-control w-100" required /><br />
+                  <input type="submit" class="btn btn-success btn-block" value="Save" name="" id="" />
+                </form>
+              </div>
+            </div>
+
+            <div class="row">
+              {% for i in addresses %}
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="border p-4 m-1">
+                  <h4>Address {{forloop.counter}}</h4>
+                  <p class="lead">{{i.address}}</p>
+                  <p class="lead">Phone {{i.phone}}</p>
+                  {% if i.status %}
+                  <p class="lead text-success active_address">
+                    Active&nbsp;<i class="bi bi-check-circle-fill"></i>
+                  </p>
+                  {%else%}
+                  <button data-make_default="{{i.id}}" class="btn btn-primary make_default_address">
+                    Make Default
+                  </button>
+                  {%endif%}
+                </div>
+              </div>
+              {%endfor%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}

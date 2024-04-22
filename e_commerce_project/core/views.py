@@ -15,10 +15,12 @@ def home(request):
 
     feartured_products = Product.objects.filter(featured_on_home_page=True)
     latest_products = Product.objects.filter().order_by('-date_added')[:4]
+    categories = Category.objects.all().order_by('?')[:4]
 
     context = {
         "feartured_products": feartured_products,
         'latest_products': latest_products,
+        'categories': categories
     }
     return render(request, 'core/index.html', context)
 
@@ -583,5 +585,60 @@ def buy_now(request, PID):
     return render(request, 'core/buy_now.html', context)
 
 
+@login_required
 def dashboard(request):
-    return render(request, 'core/dashboard.html')
+    orders = Order.objects.filter(
+        user=request.user, paid_status=True).order_by('-order_date')
+
+    order_and_ordered_items = {
+        i: CartOrderItems.objects.filter(order=i) for i in orders
+    }
+
+    context = {
+        'orders': orders,
+        "order_and_ordered_items": order_and_ordered_items
+    }
+    return render(request, 'core/dashboard.html', context)
+
+
+def order_details(request, Invoice):
+    order = get_object_or_404(Order, Invoice=Invoice)
+    order_items = CartOrderItems.objects.filter(order=order)
+    context = {
+        'order': order,
+        'order_items': order_items,
+    }
+    return render(request, 'core/order_details.html', context)
+
+
+@login_required
+def dashboard_address(request):
+    address = Address.objects.filter(user=request.user)
+    address_form = Address_Form()
+    context = {
+        'address': address,
+        'address_form': address_form
+    }
+    return render(request, 'core/dashboard_address.html', context)
+
+
+def dashboard_update_address(request, id):
+    address = get_object_or_404(Address, id=id)
+    if request.method == "POST":
+        address_form = Address_Form(request.POST, instance=address)
+        if address_form.is_valid():
+            new_address = address_form.save(commit=False)
+            new_address.user = request.user
+            if new_address.default_address:
+                temp_address = Address.objects.filter(user=request.user)
+                temp_address.update(default_address=False)
+            new_address.save()
+            messages.success(request, 'Address added!')
+        else:
+            messages.error(request, "Updating Failed")
+    form = Address_Form(instance=address)
+    context = {
+        'address': address,
+        'form': form
+    }
+    return render(request, 'core/dashboard_address_update.html', context)

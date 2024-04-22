@@ -170,7 +170,7 @@ class CartOrderItems(models.Model):
         verbose_name_plural = "Order Items"
 
     def __str__(self):
-        return f"{self.order.Invoice} :: {self.item.title}"
+        return f"{self.item.title}"
 
 
 class Product_Review(models.Model):

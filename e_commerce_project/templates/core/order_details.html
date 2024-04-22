@@ -4,20 +4,14 @@
     <!-- Sidebar -->
     <div class="col-xl-2 col-sm-12 col-md-3 col-lg-2 bg-body-tertiary">
       <div class="p-3">
-        <a
-          href=""
-          class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none"
-        >
+        <a href="" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
           <svg class="bi pe-none me-2" width="30" height="24"></svg>
           <span class="fs-5">Profile</span>
         </a>
         <hr />
         <ul class="nav nav-pills flex-column mb-auto">
           <li>
-            <a
-              href="{% url 'core:dashboard' %}"
-              class="nav-link link-body-emphasis"
-            >
+            <a href="{% url 'core:dashboard' %}" class="nav-link link-body-emphasis">
               <svg class="bi pe-none me-2" width="14" height="14">
                 <use xlink:href="#speedometer2"></use>
               </svg>
@@ -46,7 +40,7 @@
           <table class="table table-bordered table-hover">
             <thead class="table-secondary">
               <tr>
-                <th scope="col">INVOICE NO</th>
+                <th scope="col">INVOICE NO: {{order.Invoice}}</th>
                 <th scope="col">Date</th>
                 <th scope="col">Product</th>
                 <th scope="col">Status</th>
@@ -58,29 +52,29 @@
             <tbody>
               {% for i in order_items %}
               <tr>
-                <td>{{ i.invoice_no }}</td>
+                <td>{{ forloop.counter }}</td>
                 <td>{{ i.order.order_date|date:"d M,Y" }}</td>
                 <td>{{ i.item }}</td>
-                <td>{{ i.product_status|title }}</td>
+                <td>{{ order.order_status|title }}</td>
                 {% if i.order.paid_status %}
                 <td class="text-success fw-bold">Paid</td>
                 {% else %}
                 <td class="text-danger fw-bold">Unpaid</td>
                 {% endif %}
-                <td class="text-center">{{ i.qty }}</td>
-                <td>${{ i.total }}</td>
+                <td class="text-center">{{ i.quantity }}</td>
+                <td>${{ order.order_price }}</td>
               </tr>
               {% endfor %}
             </tbody>
             <tfoot>
               <tr>
                 <td colspan="6" class="text-end">Subtotal</td>
-                <td>${{ order_details.price }}</td>
+                <td>${{ order.order_price }}</td>
               </tr>
               <!-- You can calculate and display tax here -->
               <tr>
                 <td colspan="6" class="text-end">Total</td>
-                <td>${{ order_details.price }}</td>
+                <td>${{ order.order_price}}</td>
               </tr>
             </tfoot>
           </table>

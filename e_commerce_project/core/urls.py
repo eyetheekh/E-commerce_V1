@@ -46,4 +46,9 @@ urlpatterns = [
 
     path('buy/<PID>/', views.buy_now, name='buy_now'),
 
+    path('order-details/<Invoice>/', views.order_details, name='order-details'),
+    path('dashboard-address/', views.dashboard_address, name='dashboard-address'),
+    path('dashboard-address-update/<id>/',
+         views.dashboard_update_address, name='dashboard-address_update'),
+
 ]
