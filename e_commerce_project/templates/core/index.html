@@ -201,7 +201,8 @@
                                 <p class="card-text">{{i.description|truncatechars:30}}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group bg-body-tertiary mt-auto">
-                                        <a href="{% url 'core:buy_now' i.PID %}" class="btn btn-sm btn-outline-secondary">
+                                        <a href="{% url 'core:buy_now' i.PID %}"
+                                            class="btn btn-sm btn-outline-secondary">
                                             Buy
                                         </a>
                                         <input type="hidden" id="no_of_quantity_{{i.id}}" value="1">
@@ -284,6 +285,9 @@
 
                     <div class="card-footer d-inline-block">
                         <a href="{% url 'core:product_detail_view' product.PID %}" class="btn btn-outline-dark">View</a>
+                        <a href="{% url 'core:buy_now' product.PID %}" class="btn btn-outline-secondary">
+                            Buy
+                        </a>
                         <input type="hidden" id="no_of_quantity_{{product.id}}" value="1">
                         <button type="button" class="btn btn-outline-secondary add-to-cart-btn"
                             data-index="{{product.id}}" id="add-to-cart-btn">

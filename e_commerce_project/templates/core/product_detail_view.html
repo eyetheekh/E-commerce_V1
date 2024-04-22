@@ -55,9 +55,9 @@
 
                         <!--  -->
                         <div class="btn-group">
-                            <button type="button" class="btn btn btn-dark">
+                            <a href="{% url 'core:buy_now' product.PID %}" class="btn btn-outline-dark">
                                 Buy
-                            </button>
+                            </a>
                             <button type="button" class="btn btn btn-dark mx-1 add-to-cart-btn"
                                 data-index="{{product.id}}" id="add-to-cart-btn">
                                 Add ToCart
@@ -130,14 +130,9 @@
                     <p class="card-text text-center lead">No Review For this Product.</p>
                 </div>
             </div>
-
-
             {% endfor %}
-
         </div>
-
         <!-- end review accordions -->
-
 
         <!--product review form -->
         {% if can_review %}
@@ -156,14 +151,12 @@
         </div>
         {%endif%}
         <!--product review form -->
-
     </div>
 </div>
 {% if related_products%}
 <div class="container">
     <p class="display-5 text-center my-5">Related Products</p>
 </div>
-
 
 <div class="container bg-body-secondary align-items-center  my-4 ">
     <div class="row bg-body-tertiary">
@@ -194,9 +187,9 @@
                             <p class="card-text">{{i.description}}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group bg-body-tertiary">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">
+                                    <a href="{% url 'core:buy_now' i.PID %}" class="btn btn-outline-secondary">
                                         Buy
-                                    </button>
+                                    </a>
                                     <!--  -->
                                     <input type="hidden" id="no_of_quantity_{{i.id}}" value="1">
                                     <button type="button" class="btn btn-outline-secondary btn-sm add-to-cart-btn"

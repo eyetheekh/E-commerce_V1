@@ -63,9 +63,14 @@
                                 <p class="card-text">{{p.description}}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group bg-body-tertiary">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Add To
-                                            Cart</button>
+                                        <a href="{% url 'core:buy_now' p.PID %}" class="btn btn-outline-secondary">
+                                            Buy
+                                        </a>
+                                        <input type="hidden" id="no_of_quantity_{{p.id}}" value="1">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm add-to-cart-btn"
+                                            data-index="{{p.id}}" id="add-to-cart-btn">
+                                            Add To Cart
+                                        </button>
                                     </div>
                                 </div>
                             </div>
