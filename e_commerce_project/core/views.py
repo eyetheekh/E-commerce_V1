@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.urls import reverse
-from .models import Category, Product, Vendor, Product_Images, Product_Review, Address, Order, CartOrderItems
+from .models import Category, Product, Vendor, Product_Images, Product_Review, Address, Order, CartOrderItems, Contact_Us
 from taggit.models import Tag
 from .forms import Product_Review_Form, Address_Form
 from django.db.models import Q
@@ -647,9 +647,37 @@ def dashboard_update_address(request, id):
     return render(request, 'core/dashboard_address_update.html', context)
 
 
+@login_required
+def my_reviews(request):
+    user = request.user
+    reviews = Product_Review.objects.filter(user=user)
+    return render(request, 'core/my_reviews.html', {'reviews': reviews})
+
+
+def delete_review(request, id):
+    user = request.user
+    review = get_object_or_404(Product_Review, id=id)
+    review.delete()
+    return redirect('core:my_reviews')
+
+
 def about_us(request):
     return render(request, 'core/about.html')
 
 
 def contact_us(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        email = request.POST['email']
+        message = request.POST['message']
+
+        new_contact_us = Contact_Us.objects.create(
+            name=name,
+            email=email,
+            message=message
+        )
+        if new_contact_us:
+            messages.success(request, 'Message Sent!')
+        else:
+            messages.error(request, 'Message Sending Failed!')
     return render(request, 'core/contact.html')

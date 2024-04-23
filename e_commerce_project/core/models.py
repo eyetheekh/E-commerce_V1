@@ -207,4 +207,5 @@ class Contact_Us(models.Model):
     name = models.CharField(max_length=250)
     email = models.EmailField()
     message = models.TextField()
-    status = models.CharField(max_length=20, choices=contact_us_Status_choices)
+    status = models.CharField(
+        max_length=20, choices=contact_us_Status_choices, default="Initiated")

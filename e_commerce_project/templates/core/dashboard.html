@@ -27,7 +27,7 @@
             </a>
           </li>
           <li>
-            <a href="" id="address" class="nav-link link-body-emphasis">
+            <a href="{% url 'core:my_reviews' %}" id="address" class="nav-link link-body-emphasis">
               <svg class="bi pe-none me-2" width="14" height="14">
                 <use xlink:href="#grid"></use>
               </svg>
@@ -111,40 +111,7 @@
               </tbody>
             </table>
           </div>
-          <div id="address-section" class="rounded rounded-3 bg-body-tertiary p-3 m-2">
-            <div class="border border-2 p-3 text-center">
-              <p class="lead fw-bold">Billing Address</p>
-              <div class="align-middle text-left">
-                <form action="" method="post" class="w-75">
-                  {%csrf_token%}
-                  <input name="address" type="text" placeholder="Address" class="form-control w-100" required /><br />
-                  <input type="text" name="phone" placeholder="Phone" class="form-control w-100" required /><br />
-                  <input type="submit" class="btn btn-success btn-block" value="Save" name="" id="" />
-                </form>
-              </div>
-            </div>
-
-            <div class="row">
-              {% for i in addresses %}
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="border p-4 m-1">
-                  <h4>Address {{forloop.counter}}</h4>
-                  <p class="lead">{{i.address}}</p>
-                  <p class="lead">Phone {{i.phone}}</p>
-                  {% if i.status %}
-                  <p class="lead text-success active_address">
-                    Active&nbsp;<i class="bi bi-check-circle-fill"></i>
-                  </p>
-                  {%else%}
-                  <button data-make_default="{{i.id}}" class="btn btn-primary make_default_address">
-                    Make Default
-                  </button>
-                  {%endif%}
-                </div>
-              </div>
-              {%endfor%}
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>
