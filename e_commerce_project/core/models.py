@@ -195,3 +195,16 @@ class Address(models.Model):
 
     def __str__(self):
         return self.address
+
+
+contact_us_Status_choices = (
+    ('Initiated', 'Initiated'),
+    ('Solved', 'Solved'),
+)
+
+
+class Contact_Us(models.Model):
+    name = models.CharField(max_length=250)
+    email = models.EmailField()
+    message = models.TextField()
+    status = models.CharField(max_length=20, choices=contact_us_Status_choices)

@@ -51,4 +51,7 @@ urlpatterns = [
     path('dashboard-address-update/<id>/',
          views.dashboard_update_address, name='dashboard-address_update'),
 
+    path('about/', views.about_us, name='about'),
+    path('contact/', views.contact_us, name='contact'),
+
 ]

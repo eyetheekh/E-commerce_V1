@@ -17,10 +17,13 @@ def home(request):
     latest_products = Product.objects.filter().order_by('-date_added')[:4]
     categories = Category.objects.all().order_by('?')[:4]
 
+    deal_products = Product.objects.filter().order_by('-discount_amount')[:8]
+
     context = {
         "feartured_products": feartured_products,
         'latest_products': latest_products,
-        'categories': categories
+        'categories': categories,
+        'deal_products': deal_products
     }
     return render(request, 'core/index.html', context)
 
@@ -642,3 +645,11 @@ def dashboard_update_address(request, id):
         'form': form
     }
     return render(request, 'core/dashboard_address_update.html', context)
+
+
+def about_us(request):
+    return render(request, 'core/about.html')
+
+
+def contact_us(request):
+    return render(request, 'core/contact.html')

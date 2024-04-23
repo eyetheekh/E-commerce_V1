@@ -167,7 +167,8 @@
                     style="background-image: url('{{c.image.url}}');background-repeat: no-repeat;background-position: center;background-size: cover;">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                         <h3 class="pt-5 mt-5 mb-4 text-center display-6 lh-1 fw-bold text-dark">
-                            <a href="" class="btn btn-sm rounded-3 btn-dark">{{c.title}}</a>
+                            <a href="{% url 'core:category_detail_view' c.CID %}"
+                                class="btn btn-sm rounded-3 btn-dark">{{c.title}}</a>
                         </h3>
                     </div>
                 </div>
@@ -235,18 +236,20 @@
     <!--End Featured Products -->
 
     <!-- category banner 2 -->
-    <div id="scroll-2" class="container-fluid banner bg-secondary my-5">
+    <div id="scroll-2" class="container-fluid banner bg-secondary my-5"
+        style="background-image: url({% static 'images/colorful-collage-fruits-texture-close-up_23-2149870264.png' %});">
         <div class="container py-5">
             <div class="row g-4 align-items-center">
                 <div class="col-lg-6">
                     <div class="py-4">
                         <h1 class="display-3 text-white">Fresh Exotic Fruits</h1>
-                        <p class="fw-normal display-3 text-dark mb-4">in Our Store</p>
-                        <p class="mb-4 text-dark">
+                        <p class="fw-normal display-3 text-danger mb-4">in Our Store</p>
+                        <p class="mb-4 text-white">
                             The generated Lorem Ipsum is therefore always free from repetition
                             injected humour, or non-characteristic words etc.
                         </p>
-                        <a href="" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">BUY</a>
+                        <a href="{% url 'core:category_detail_view' 'CAT:5yYW8xgT4t' %}"
+                            class="banner-btn btn border-2 border-white rounded-pill text-white py-3 px-5">BUY</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -295,11 +298,19 @@
                         <small class="text-muted">Added: {{ product.date_added|date }}</small>
                     </div>
 
-                    <div class="card-footer d-inline-block">
+                    <!-- <div class="card-footer d-inline-block">
                         <a href="{% url 'core:product_detail_view' product.PID %}" class="btn btn-outline-dark">View</a>
                         <a href="{% url 'core:buy_now' product.PID %}" class="btn btn-outline-secondary">
                             Buy
                         </a>
+                        <input type="hidden" id="no_of_quantity_{{product.id}}" value="1">
+                        <button type="button" class="btn btn-outline-secondary add-to-cart-btn"
+                            data-index="{{product.id}}" id="add-to-cart-btn">
+                            Add To Cart
+                        </button>
+                    </div> -->
+                    <div class="card-footer d-flex justify-content-center align-items-center">
+                        <a href="{% url 'core:buy_now' product.PID %}" class="btn btn-primary mx-1">Buy Now</a>
                         <input type="hidden" id="no_of_quantity_{{product.id}}" value="1">
                         <button type="button" class="btn btn-outline-secondary add-to-cart-btn"
                             data-index="{{product.id}}" id="add-to-cart-btn">
@@ -312,6 +323,60 @@
         </div>
     </div>
     <!-- end Latest -->
+
+
+    <!--  -->
+    <div class="container">
+        <div class="row justify-content-center align-items-center my-4">
+            <div class="col-lg-8 text-center">
+                <div class="section-title">
+                    <h1>Deals of the Week</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore
+                        magna aliqua.</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <img class="img-fluid d-block mx-auto" src="{% static 'images/c5.jpg' %}" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    {% for i in deal_products %}
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-4">
+                        <div class="card h-50">
+                            <div class="position-absolute top-0 fs-6 start-0 translate-middle badge bg-danger"
+                                style="z-index: 1; margin-top: 25px; margin-left: 40px">
+                                -{{i.discount_percentage|floatformat}}% Off
+                            </div>
+                            <a href="{% url 'core:product_detail_view' i.PID %}" class=""><img src="{{i.image.url}}"
+                                    style="height: 200px;" class="card-img-top" alt="{{i.title}}"></a>
+                            <div class="card-body">
+                                <a href="{% url 'core:product_detail_view' i.PID %}"
+                                    class="text-decoration-none text-dark">
+                                    <h5 class="card-title">{{i.title}}</h5>
+                                </a>
+                                <p class="text-muted fs-5">Price: ${{i.price}}</p>
+                                <p class="fs-5 text-success">Deal Price: ${{i.price_after_discount}}</p>
+                            </div>
+                            <div class="card-footer d-flex justify-content-center align-items-center">
+                                <a href="{% url 'core:buy_now' i.PID %}" class="btn btn-primary mx-1">Buy Now</a>
+                                <input type="hidden" id="no_of_quantity_{{i.id}}" value="1">
+                                <button type="button" class="btn btn-outline-secondary add-to-cart-btn"
+                                    data-index="{{i.id}}" id="add-to-cart-btn">
+                                    Add To Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--  -->
 
     <!-- start 2 box Section -->
     <div class="container">
@@ -330,7 +395,6 @@
     <!-- end 2 box Section -->
 
     <!--  -->
-
     <div class="container my-3 bg-body-tertiary rounded rounded-4 p-2">
         <div class="row justify-content-center align-items-center">
             <div class="col-lg-4">
